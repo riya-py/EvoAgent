@@ -8,6 +8,10 @@
 - [x] Phase 5 — Judge System
 - [x] Phase 6 — Scoring Engine
 - [x] Phase 7 — Peer Voting
+- [x] Phase 8 — Arena Round Engine
+- [x] Phase 9 — Elimination System
+- [x] Phase 10 — Evolution Engine
+- [x] Phase 11 — Personality Diversity
 - [ ] Phase 4 — 8-Agent Arena
 - [ ] Phase 5 — Judge System
 - [ ] Phase 6 — Scoring Engine
