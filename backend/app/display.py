@@ -20,6 +20,7 @@ And a Leaderboard as a box-drawn table:
 """
 from __future__ import annotations
 
+from app.models.elimination import EliminationRecord
 from app.models.round import RoundResult
 from app.models.scoring import Leaderboard
 
@@ -62,3 +63,7 @@ def format_leaderboard(leaderboard: Leaderboard) -> str:
     lines.append(hline("╰", "┴", "╯"))
 
     return "\n".join(lines)
+
+
+def format_elimination(record: EliminationRecord) -> str:
+    return f"❌ ELIMINATED (Round {record.round_number}): {record.personality_name} — score {record.final_score:.1f}"
