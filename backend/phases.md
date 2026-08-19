@@ -1,0 +1,27 @@
+# AI Arena — Phase Tracker
+
+- [x] Phase 0 — Project Setup
+- [x] Phase 1 — Ollama Model Manager
+- [x] Phase 2 — Personality System
+- [x] Phase 3 — Single Agent Pipeline
+- [x] Phase 4 — 8-Agent Arena
+- [x] Phase 5 — Judge System
+- [x] Phase 6 — Scoring Engine
+- [x] Phase 7 — Peer Voting
+- [ ] Phase 4 — 8-Agent Arena
+- [ ] Phase 5 — Judge System
+- [ ] Phase 6 — Scoring Engine
+- [ ] Phase 7 — Peer Voting
+- [ ] Phase 8 — Arena Round Engine
+- [ ] Phase 9 — Elimination System
+- [ ] Phase 10 — Evolution Engine
+- [ ] Phase 11 — Personality Diversity
+- [ ] Phase 12 — Multi-Round Evolution
+- [ ] Phase 13 — Persistence
+- [ ] Phase 14 — FastAPI (endpoints beyond /api/health)
+- [ ] Phase 15 — Real-Time Streaming
+- [ ] Phase 16 — React Dashboard
+- [ ] Phase 17 — Answer Comparison
+- [ ] Phase 18 — Leaderboard + Analytics
+- [ ] Phase 19 — Evolution Tree
+- [ ] Phase 20 — Demo Mode + Reliability
