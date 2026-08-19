@@ -19,12 +19,9 @@ And a Leaderboard as a box-drawn table:
     ╰────┴────────────────────┴───────╯
 """
 from __future__ import annotations
-from typing import TYPE_CHECKING
 
 from app.models.round import RoundResult
-
-if TYPE_CHECKING:
-    from app.models.scoring import Leaderboard
+from app.models.scoring import Leaderboard
 
 
 def format_round_table(round_result: RoundResult, preview_chars: int = 60) -> str:
