@@ -13,6 +13,7 @@ from pydantic import BaseModel, Field
 
 from app.models.elimination import EliminationRecord
 from app.models.judge import JudgeResult
+from app.models.personality import Personality
 from app.models.round import RoundResult
 from app.models.scoring import Leaderboard
 from app.models.voting import PeerVotingResult
@@ -30,3 +31,9 @@ class RoundOutcome(BaseModel):
     # Persistence) can trace a judge's per-letter critique back to the
     # agent it was actually about, without re-exposing it to judges.
     reveal_map: dict[str, str] = Field(default_factory=dict)
+
+    # The replacement personality created for the eliminated slot, when
+    # Multi-Round Evolution (Phase 12) is turned on. None when either
+    # nobody was eliminated this round, or evolution is off (Phase 9's
+    # plain shrink-the-roster behavior).
+    newborn: Optional[Personality] = None

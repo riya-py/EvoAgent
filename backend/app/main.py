@@ -18,6 +18,7 @@ from app.config import settings
 from app.database import check_db, init_db
 from app.logging_config import setup_logging
 from app.ollama_manager import ollama_manager
+from app.routers.arena import router as arena_router
 
 setup_logging()
 logger = logging.getLogger(__name__)
@@ -48,6 +49,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title=settings.app_name, lifespan=lifespan)
+app.include_router(arena_router)
 
 
 @app.get("/api/health")

@@ -12,18 +12,10 @@
 - [x] Phase 9 — Elimination System
 - [x] Phase 10 — Evolution Engine
 - [x] Phase 11 — Personality Diversity
-- [ ] Phase 4 — 8-Agent Arena
-- [ ] Phase 5 — Judge System
-- [ ] Phase 6 — Scoring Engine
-- [ ] Phase 7 — Peer Voting
-- [ ] Phase 8 — Arena Round Engine
-- [ ] Phase 9 — Elimination System
-- [ ] Phase 10 — Evolution Engine
-- [ ] Phase 11 — Personality Diversity
-- [ ] Phase 12 — Multi-Round Evolution
-- [ ] Phase 13 — Persistence
-- [ ] Phase 14 — FastAPI (endpoints beyond /api/health)
-- [ ] Phase 15 — Real-Time Streaming
+- [x] Phase 12 — Multi-Round Evolution
+- [x] Phase 13 — Persistence
+- [x] Phase 14 — FastAPI (endpoints beyond /api/health)
+- [x] Phase 15 — Real-Time Streaming
 - [ ] Phase 16 — React Dashboard
 - [ ] Phase 17 — Answer Comparison
 - [ ] Phase 18 — Leaderboard + Analytics

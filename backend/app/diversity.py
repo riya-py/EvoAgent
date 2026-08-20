@@ -218,6 +218,7 @@ async def evolve_with_diversity_check(
     evolution_input: EvolutionInput,
     existing_personalities: list[Personality],
     max_attempts: int = 3,
+    checker: DiversityChecker | None = None,
 ) -> Personality:
     """
     Evolve repeatedly until the generated personality is sufficiently
@@ -226,7 +227,7 @@ async def evolve_with_diversity_check(
     Raises:
         ValueError: if every attempt produces a personality that is too similar.
     """
-    checker = DiversityChecker()
+    checker = checker or DiversityChecker()
 
     for attempt in range(1, max_attempts + 1):
         candidate = await engine.evolve(evolution_input)
