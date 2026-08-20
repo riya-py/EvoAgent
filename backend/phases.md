@@ -18,6 +18,6 @@
 - [x] Phase 15 — Real-Time Streaming
 - [x] Phase 16 — React Dashboard
 - [x] Phase 17 — Answer Comparison
-- [ ] Phase 18 — Leaderboard + Analytics
-- [ ] Phase 19 — Evolution Tree
+- [x] Phase 18 — Leaderboard + Analytics
+- [x] Phase 19 — Evolution Tree
 - [ ] Phase 20 — Demo Mode + Reliability

@@ -13,7 +13,7 @@ from app.agent_factory import build_agents
 from app.arena_engine import ArenaEngine
 from app.config import settings
 from app.events import EventBus
-from app.models.api import AgentSummary, RoundSummary
+from app.models.api import AgentSummary, RoundSummary, ScorePoint
 from app.models.arena import RoundOutcome
 from app.models.scoring import Leaderboard
 from app.persistence import ArenaRepository
@@ -50,41 +50,62 @@ async def ask_question(question: str) -> RoundOutcome:
     return await engine.run_round(question)
 
 
-def _agent_round_stats(engine: ArenaEngine, agent_id: str) -> tuple[float | None, float | None, int]:
-    """(latest_score, average_score, rounds_survived) for one agent_id,
-    derived from arena history. rounds_survived counts rounds the agent
-    answered in AND was not eliminated in that same round."""
-    scores: list[float] = []
+def _agent_round_stats(engine: ArenaEngine, agent_id: str) -> dict:
+    """Everything derived from arena history for one agent_id: score
+    trend, survival count, wins/losses, and (if it happened) why it
+    was eliminated. Computed fresh each call rather than cached, since
+    engine.history only ever grows monotonically within a run."""
+    score_history: list[ScorePoint] = []
     survived = 0
+    wins = 0
+
     for outcome in engine.history:
         participated = any(a.agent_id == agent_id for a in outcome.round_result.answers)
         if not participated:
             continue
+
         entry = next((e for e in outcome.leaderboard.entries if e.agent_id == agent_id), None)
         if entry is not None:
-            scores.append(entry.score)
+            score_history.append(ScorePoint(round_number=outcome.round_number, score=entry.score))
+            if entry.rank == 1:
+                wins += 1
+
         eliminated_this_round = outcome.eliminated is not None and outcome.eliminated.agent_id == agent_id
         if not eliminated_this_round:
             survived += 1
 
+    losses = sum(1 for e in engine.eliminated if e.agent_id == agent_id)
+    elimination_record = next((e for e in engine.eliminated if e.agent_id == agent_id), None)
+
+    scores = [p.score for p in score_history]
     latest = scores[-1] if scores else None
     average = round(sum(scores) / len(scores), 2) if scores else None
-    return latest, average, survived
+
+    return {
+        "latest_score": latest,
+        "average_score": average,
+        "rounds_survived": survived,
+        "wins": wins,
+        "losses": losses,
+        "score_history": score_history,
+        "elimination_reason": elimination_record.reason if elimination_record else None,
+    }
 
 
 def _summarize(engine: ArenaEngine, agent) -> AgentSummary:
-    latest_score, average_score, rounds_survived = _agent_round_stats(engine, agent.agent_id)
+    stats = _agent_round_stats(engine, agent.agent_id)
     return AgentSummary(
         agent_id=agent.agent_id,
         personality_name=agent.personality.name,
+        description=agent.personality.description,
         model=agent.model,
         generation=agent.personality.generation,
         parent_agent=agent.personality.parent_agent,
         status=engine.status_of(agent.agent_id) or "UNKNOWN",
         statistics=agent.statistics,
-        latest_score=latest_score,
-        average_score=average_score,
-        rounds_survived=rounds_survived,
+        specialties=agent.personality.specialties,
+        weaknesses=agent.personality.weaknesses,
+        **stats,
     )
 
 

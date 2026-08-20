@@ -16,20 +16,36 @@ from pydantic import BaseModel
 from app.models.agent import AgentStatistics
 
 
+class ScorePoint(BaseModel):
+    round_number: int
+    score: float
+
+
 class AgentSummary(BaseModel):
     agent_id: str
     personality_name: str
+    description: str
     model: str
     generation: int
     parent_agent: Optional[str] = None
     status: str  # "ACTIVE" | "ELIMINATED"
     statistics: AgentStatistics
+    specialties: list[str] = []
+    weaknesses: list[str] = []
 
     # Phase 16 (Agent Cards) needs these on the card face — computed from
     # arena history in arena_service, not stored on the Agent itself.
     latest_score: Optional[float] = None
     average_score: Optional[float] = None
     rounds_survived: int = 0
+
+    # Phase 18 (Leaderboard + Analytics)
+    wins: int = 0  # rounds this agent ranked #1
+    losses: int = 0  # rounds this agent was eliminated
+    score_history: list[ScorePoint] = []
+
+    # Phase 19 (Evolution Tree) — populated only for eliminated agents.
+    elimination_reason: Optional[str] = None
 
 
 class RoundSummary(BaseModel):
