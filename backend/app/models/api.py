@@ -25,6 +25,12 @@ class AgentSummary(BaseModel):
     status: str  # "ACTIVE" | "ELIMINATED"
     statistics: AgentStatistics
 
+    # Phase 16 (Agent Cards) needs these on the card face — computed from
+    # arena history in arena_service, not stored on the Agent itself.
+    latest_score: Optional[float] = None
+    average_score: Optional[float] = None
+    rounds_survived: int = 0
+
 
 class RoundSummary(BaseModel):
     round_number: int

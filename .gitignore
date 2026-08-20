@@ -26,9 +26,11 @@ ENV/
 # =========================
 .pytest_cache/
 .coverage
+.coverage.*
 htmlcov/
 .tox/
 .nox/
+pytestdebug.log
 
 # =========================
 # SQLite / Local Database
@@ -53,11 +55,14 @@ logs/
 .idea/
 *.swp
 *.swo
+*.swn
+*.bak
 
 # =========================
 # OS
 # =========================
 .DS_Store
+.DS_Store?
 Thumbs.db
 desktop.ini
 
@@ -67,15 +72,148 @@ desktop.ini
 build/
 dist/
 *.egg-info/
+.eggs/
 
 # =========================
-# Ruff / Mypy / Pyright
+# Python Tooling
 # =========================
 .ruff_cache/
 .mypy_cache/
 .pyright/
+.pyre/
+.pytype/
+.hypothesis/
 
 # =========================
 # Jupyter
 # =========================
 .ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# =========================
+# Node.js
+# =========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# =========================
+# Frontend Build Output
+# =========================
+dist/
+build/
+.vite/
+.next/
+.nuxt/
+.output/
+.cache/
+.parcel-cache/
+.turbo/
+
+# =========================
+# Frontend Environment
+# =========================
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Keep example env files
+!.env.example
+!.env.local.example
+
+# =========================
+# TypeScript
+# =========================
+*.tsbuildinfo
+
+# =========================
+# Coverage
+# =========================
+coverage/
+.nyc_output/
+
+# =========================
+# ESLint / Prettier
+# =========================
+.eslintcache
+.prettiercache
+
+# =========================
+# React / Vite
+# =========================
+vite.config.*.timestamp-*
+react-router-env.d.ts
+
+# =========================
+# Next.js
+# =========================
+.next/
+out/
+
+# =========================
+# Temporary / Runtime Files
+# =========================
+tmp/
+temp/
+*.tmp
+*.temp
+
+# =========================
+# Local Uploads / Downloads
+# =========================
+downloads/
+uploads/
+
+# =========================
+# AI / ML / Model Files
+# =========================
+*.pt
+*.pth
+*.bin
+*.safetensors
+*.onnx
+*.gguf
+
+# =========================
+# Local AI / Ollama
+# =========================
+.ollama/
+
+# =========================
+# Secrets / Credentials
+# =========================
+*.pem
+*.key
+*.crt
+credentials.json
+secrets.json
+
+# =========================
+# Database / Vector Stores
+# =========================
+qdrant_storage/
+chroma/
+chroma_db/
+*.faiss
+
+# =========================
+# Local Application Data
+# =========================
+data/*.db
+data/*.sqlite
+data/*.sqlite3
+
+# =========================
+# Docker
+# =========================
+docker-compose.override.yml
+
+# =========================
+# Miscellaneous
+# =========================
+*.pid
+*.seed

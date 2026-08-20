@@ -16,8 +16,8 @@
 - [x] Phase 13 — Persistence
 - [x] Phase 14 — FastAPI (endpoints beyond /api/health)
 - [x] Phase 15 — Real-Time Streaming
-- [ ] Phase 16 — React Dashboard
-- [ ] Phase 17 — Answer Comparison
+- [x] Phase 16 — React Dashboard
+- [x] Phase 17 — Answer Comparison
 - [ ] Phase 18 — Leaderboard + Analytics
 - [ ] Phase 19 — Evolution Tree
 - [ ] Phase 20 — Demo Mode + Reliability
