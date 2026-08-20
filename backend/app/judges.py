@@ -16,6 +16,8 @@ from __future__ import annotations
 
 import logging
 
+from pydantic import ValidationError
+
 from app.json_utils import extract_json_array
 from app.models.judge import AnonymizedAnswer, JudgeResult, JudgeScore
 from app.ollama_manager import OllamaManager, ollama_manager
@@ -38,6 +40,24 @@ and nothing else — no preamble, no markdown fences:
   {"answer_id": "B", "accuracy": 6, "reasoning": 8, "utility": 5, "overall": 6.3, "critique": "..."}
 ]
 """
+
+
+def _clamp_score_fields(item: dict) -> dict:
+    """Force accuracy/reasoning/utility/overall back into the 1-10 range
+    a model occasionally ignores (e.g. scoring something a flat 0)."""
+    clamped = dict(item)
+    for key in ("accuracy", "reasoning", "utility"):
+        if key in clamped:
+            try:
+                clamped[key] = max(1, min(10, round(float(clamped[key]))))
+            except (TypeError, ValueError):
+                clamped[key] = 1
+    if "overall" in clamped:
+        try:
+            clamped["overall"] = max(1.0, min(10.0, float(clamped["overall"])))
+        except (TypeError, ValueError):
+            clamped["overall"] = 1.0
+    return clamped
 
 
 class Judge:
@@ -78,7 +98,20 @@ class Judge:
             if item.get("answer_id") not in valid_letters:
                 logger.warning("%s returned score for unknown answer_id %r — skipping", self.name, item.get("answer_id"))
                 continue
-            scores.append(JudgeScore(**item))
+            try:
+                scores.append(JudgeScore(**item))
+            except ValidationError:
+                # Local/smaller models don't always obey "score 1-10" to the
+                # letter (a 0, an 11, a stray string) — clamp back into range
+                # rather than letting one sloppy score sink the whole round.
+                clamped = _clamp_score_fields(item)
+                try:
+                    scores.append(JudgeScore(**clamped))
+                except ValidationError as exc:
+                    logger.warning(
+                        "%s returned an unparseable score for %r — skipping: %s",
+                        self.name, item.get("answer_id"), exc,
+                    )
 
         return JudgeResult(judge_name=self.name, focus=self.focus, scores=scores)
 
