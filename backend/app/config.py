@@ -35,6 +35,30 @@ class Settings(BaseSettings):
     # truncates a multi-item judge JSON array even with num_ctx raised.
     ollama_num_predict: int = 2048
 
+    # LLM provider — "ollama" (local, default, free, slow on CPU-only
+    # hardware) or "groq" (hosted, free tier, fast — good for judges or
+    # for escaping slow/flaky local inference entirely). Everything
+    # else (Agent, Judge, Evolution) is written against a common
+    # interface and doesn't know or care which provider is active.
+    llm_provider: str = "ollama"
+    groq_api_key: str | None = None
+    groq_base_url: str = "https://api.groq.com/openai/v1"
+    groq_timeout_seconds: int = 60
+    # Groq's equivalent of num_predict — max tokens generated per call.
+    groq_max_tokens: int = 2048
+    # Free-tier accounts cap how many requests can be in flight at once,
+    # separate from (and much lower than) the per-minute limit — firing
+    # all 8 agents concurrently trips this even though 11 total calls
+    # is nowhere near 30 RPM. This throttles our own concurrency to stay
+    # under that, without touching Agent/Judge/Evolution or how they
+    # fire requests (still full asyncio.gather concurrency upstream).
+    groq_max_concurrency: int = 3
+    # How many times to retry a single call after a 429, honoring
+    # Groq's `retry-after` header (falls back to this many seconds if
+    # the header is missing).
+    groq_max_retries: int = 3
+    groq_retry_fallback_seconds: float = 2.0
+
     # Database
     database_path: str = "./data/arena.db"
 
@@ -59,6 +83,13 @@ class Settings(BaseSettings):
     # falling back to Ollama's arbitrary "first installed model" pick.
     # Falls back to dev_model_override, then normal resolution, if unset.
     dev_judge_model_override: str | None = None
+    # Judges normally run concurrently (asyncio.gather) — fine on a GPU
+    # or a machine with cores to spare. On CPU-only hardware, 3 judges
+    # firing at once just split the same limited throughput three ways
+    # and each one crawls; running them one at a time often finishes
+    # the whole batch faster, not slower. Off by default (unchanged
+    # behavior) — opt in on slow hardware.
+    dev_judges_sequential: bool = False
 
     @property
     def database_full_path(self) -> Path:

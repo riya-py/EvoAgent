@@ -172,5 +172,16 @@ class OllamaManager:
             )
 
 
-# Shared instance the rest of the app can import directly.
-ollama_manager = OllamaManager()
+# Shared instance the rest of the app can import directly. Which
+# concrete class this actually is depends on LLM_PROVIDER — Agent,
+# Judge, Evolution, and agent_factory all just call .generate() etc.
+# without caring, since GroqManager duck-types the same interface.
+def _build_default_manager():
+    if settings.llm_provider == "groq":
+        from app.groq_manager import GroqManager
+        logger.info("LLM_PROVIDER=groq — using Groq API instead of local Ollama")
+        return GroqManager()
+    return OllamaManager()
+
+
+ollama_manager = _build_default_manager()
