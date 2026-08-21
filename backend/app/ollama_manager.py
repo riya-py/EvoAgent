@@ -86,7 +86,12 @@ class OllamaManager:
         """Single non-streaming generation call. Never raises — failures
         come back as a GenerationResult with success=False so callers
         (Agents, later on) can handle a bad model/timeout gracefully."""
-        payload = {"model": model, "prompt": prompt, "stream": False}
+        payload = {
+            "model": model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {"num_ctx": settings.ollama_num_ctx, "num_predict": settings.ollama_num_predict},
+        }
         if system:
             payload["system"] = system
 
@@ -125,7 +130,12 @@ class OllamaManager:
         system: Optional[str] = None,
     ) -> AsyncIterator[str]:
         """Yield response text chunks as they arrive from Ollama."""
-        payload = {"model": model, "prompt": prompt, "stream": True}
+        payload = {
+            "model": model,
+            "prompt": prompt,
+            "stream": True,
+            "options": {"num_ctx": settings.ollama_num_ctx, "num_predict": settings.ollama_num_predict},
+        }
         if system:
             payload["system"] = system
 

@@ -40,6 +40,7 @@ import logging
 from app.agent import Agent
 from app.anonymizer import anonymize_answers
 from app.arena_round import run_round as run_agent_round
+from app.config import settings
 from app.diversity import DiversityChecker, evolve_with_diversity_check
 from app.evolution import EvolutionEngine
 from app.evolution_input import build_evolution_input
@@ -259,6 +260,14 @@ class ArenaEngine:
 
     async def _get_judge_model(self) -> str:
         if self._judge_model:
+            return self._judge_model
+
+        if settings.dev_judge_model_override:
+            self._judge_model = settings.dev_judge_model_override
+            return self._judge_model
+
+        if settings.dev_model_override:
+            self._judge_model = settings.dev_model_override
             return self._judge_model
 
         models = await self.manager.list_models()

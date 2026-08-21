@@ -90,6 +90,10 @@ class Judge:
         if not result.success:
             raise ValueError(f"{self.name} generation failed: {result.error}")
 
+        logger.info(
+            "%s raw response (%d chars): %r",
+            self.name, len(result.response), result.response,
+        )
         raw_scores = extract_json_array(result.response)
         valid_letters = {a.letter for a in answers}
 
