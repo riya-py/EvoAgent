@@ -1,4 +1,4 @@
-# EvoAgent
+# AI Arena
 
 Multi-agent LLM competition/evolution system. Built phase by phase — see
 `backend/PHASES.md` for the full 20-phase roadmap and current status.
