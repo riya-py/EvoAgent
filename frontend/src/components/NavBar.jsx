@@ -28,12 +28,12 @@ export default function NavBar() {
         style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.9rem', paddingBottom: '0.9rem' }}
       >
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem' }}>
-          <h1 style={{ fontSize: 20, letterSpacing: '0.04em' }}>AI Arena</h1>
+          <h1 style={{ fontSize: 20, letterSpacing: '0.04em' }}>EvoAgent</h1>
           <span className="eyebrow">8 personalities · evolving roster</span>
         </div>
         <nav style={{ display: 'flex', gap: '0.4rem' }}>
           <NavLink to="/" style={linkStyle} end>
-            Arena
+            Agent
           </NavLink>
           <NavLink to="/compare" style={linkStyle}>
             Compare

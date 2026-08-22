@@ -13,7 +13,7 @@ export default function QuestionBar({ onSubmit, isRunning }) {
   return (
     <form onSubmit={handleSubmit} className="card" style={{ padding: '1.25rem 1.4rem' }}>
       <div className="eyebrow" style={{ marginBottom: '0.5rem' }}>
-        Tonight's question
+        User's question
       </div>
       <div style={{ display: 'flex', gap: '0.75rem' }}>
         <input

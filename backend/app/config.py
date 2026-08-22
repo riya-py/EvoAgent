@@ -56,8 +56,9 @@ class Settings(BaseSettings):
     # How many times to retry a single call after a 429, honoring
     # Groq's `retry-after` header (falls back to this many seconds if
     # the header is missing).
-    groq_max_retries: int = 3
-    groq_retry_fallback_seconds: float = 2.0
+    groq_max_retries: int = 5
+    groq_retry_fallback_seconds: float = 5.0
+    groq_min_interval_seconds: float = 1.5
 
     # Database
     database_path: str = "./data/arena.db"

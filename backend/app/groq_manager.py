@@ -27,6 +27,22 @@ from app.models.ollama import GenerationResult, HealthStatus, ModelInfo
 
 logger = logging.getLogger(__name__)
 
+class _RatePacer:
+    """Spaces out request starts so N requests never land in one burst,
+    regardless of how many are allowed to run concurrently."""
+    def __init__(self, min_interval: float):
+        self.min_interval = min_interval
+        self._lock = asyncio.Lock()
+        self._next_slot = 0.0
+
+    async def wait(self):
+        async with self._lock:
+            now = time.perf_counter()
+            start_at = max(now, self._next_slot)
+            self._next_slot = start_at + self.min_interval
+            delay = start_at - now
+        if delay > 0:
+            await asyncio.sleep(delay)
 
 class GroqManager:
     def __init__(self, api_key: Optional[str] = None, base_url: Optional[str] = None, timeout: Optional[int] = None):
@@ -39,6 +55,7 @@ class GroqManager:
         # Caps how many Groq calls this instance has in flight at once —
         # see groq_max_concurrency in config.py for why this matters.
         self._semaphore = asyncio.Semaphore(settings.groq_max_concurrency)
+        self._pacer = _RatePacer(settings.groq_min_interval_seconds)
 
     def _client(self) -> httpx.AsyncClient:
         if not self.api_key:
@@ -111,6 +128,7 @@ class GroqManager:
         }
 
         start = time.perf_counter()
+        await self._pacer.wait()
         async with self._semaphore:
             attempt = 0
             while True:

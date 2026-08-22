@@ -27,7 +27,12 @@ logger = logging.getLogger(__name__)
 # system_prompt so this behavior is consistent across all agents.
 RESPONSE_GUARDRAIL = (
     "Respond with your conclusion and a concise supporting explanation. "
-    "Do not reveal step-by-step private reasoning or chain-of-thought."
+    "Do not reveal step-by-step private reasoning or chain-of-thought. "
+    "Write in natural, flowing prose like you're talking to someone — "
+    "not a formatted report. Avoid markdown headers, bold labels, or "
+    "bullet-point breakdowns unless a list is genuinely the clearest way "
+    "to say something. No '**What's established**' or '**Key points**' "
+    "style section headers, ever."
 )
 
 
