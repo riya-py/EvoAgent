@@ -161,6 +161,7 @@ tmp/
 temp/
 *.tmp
 *.temp
+tests/
 
 # =========================
 # Local Uploads / Downloads
